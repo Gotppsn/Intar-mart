@@ -1,0 +1,1852 @@
+# Comprehensive IM-BIS Client-side Scripting API Reference Dataset
+
+## 1. API Overview and Architecture
+
+The IM-BIS Client-side Scripting API (22nd Edition, 2025-04-01) provides a JavaScript framework for manipulating form elements within the IM-BIS for Accel Platform. The API follows a consistent object-oriented architecture with environment-specific syntax variations.
+
+### 1.1 Core Framework
+
+All API functions are accessed through the `formaItems` namespace using the following pattern:
+
+```
+formaItems.<product_code>_<element_type>.<operation_type>.<identifier>([parameters])
+```
+
+Where:
+- `product_code`: Denotes the product version (e.g., "product_72", "product_80")
+- `element_type`: Specifies the form element type (e.g., "textbox", "checkbox", "table")
+- `operation_type`: Indicates the action to perform (e.g., "getItemData", "setItemData")
+- `identifier`: References the specific field or table ID
+- `parameters`: Optional arguments for the operation
+
+### 1.2 Environment-Specific Patterns
+
+The API distinguishes between PC and smartphone environments:
+
+#### 1.2.1 PC Version Pattern
+```javascript
+// For retrieving values
+formaItems.product_[product_code]_[item_type].getItemData.%identifier%([parameters])
+
+// For setting values
+formaItems.product_[product_code]_[item_type].setItemData.%identifier%(Object arg)
+```
+
+#### 1.2.2 Smartphone Version Pattern
+```javascript
+// For retrieving values
+formaItems.product_[product_code]_[item_type].getItemDataSp(Object arg)
+
+// For setting values
+formaItems.product_[product_code]_[item_type].setItemDataSp(Object arg)
+```
+
+## 2. Supported Field Types and Element-Specific Operations
+
+### 2.1 Basic Input Elements
+
+#### 2.1.1 Text Input (String)
+- **PC Version Get**: `formaItems.product_72_textbox.getItemData.%Field ID%()`
+- **PC Version Set**: `formaItems.product_72_textbox.setItemData.%Field ID%(Object arg)`
+- **Smartphone Get**: `formaItems.product_72_textbox.getItemDataSp(Object arg)`
+- **Smartphone Set**: `formaItems.product_72_textbox.setItemDataSp(Object arg)`
+- **Return Type**: String
+- **Set Value Structure**: `args.data.%Field ID% = "input value"`
+- **Smartphone Set Structure**: `args.inputDataList.%Field ID% = "input value"`
+
+#### 2.1.2 Multi-line Text Input
+- **PC Version Get**: `formaItems.product_72_textarea.getItemData.%Field ID%()`
+- **PC Version Set**: `formaItems.product_72_textarea.setItemData.%Field ID%(Object arg)`
+- **Smartphone Get**: `formaItems.product_72_textarea.getItemDataSp(Object arg)`
+- **Smartphone Set**: `formaItems.product_72_textarea.setItemDataSp(Object arg)`
+- **Return Type**: String (may contain line breaks)
+- **Set Value Structure**: `args.data.%Field ID% = "input value\nwith multiple\nlines"`
+- **Smartphone Set Structure**: `args.inputDataList.%Field ID% = "input value\nwith multiple\nlines"`
+
+#### 2.1.3 Number Input
+- **PC Version Get**: `formaItems.product_72_number.getItemData.%Field ID%()`
+- **PC Version Set**: `formaItems.product_72_number.setItemData.%Field ID%(Object arg)`
+- **Smartphone Get**: `formaItems.product_72_number.getItemDataSp(Object arg)`
+- **Smartphone Set**: `formaItems.product_72_number.setItemDataSp(Object arg)`
+- **Return Type**: String (numeric value as string)
+- **Set Value Structure**: `args.data.%Field ID% = "123.45"`
+- **Smartphone Set Structure**: `args.inputDataList.%Field ID% = "123.45"`
+
+#### 2.1.4 Date Input
+- **PC Version Get**: `formaItems.product_72_calendar.getItemData.%Field ID%()`
+- **PC Version Set**: `formaItems.product_72_calendar.setItemData.%Field ID%(Object arg)`
+- **Smartphone Get**: `formaItems.product_72_calendar.getItemDataSp(Object arg)`
+- **Smartphone Set**: `formaItems.product_72_calendar.setItemDataSp(Object arg)`
+- **Return Type**: String (date in format determined by system settings)
+- **Set Value Structure**: `args.data.%Field ID% = "2025-04-10"`
+- **Smartphone Set Structure**: `args.inputDataList.%Field ID% = "2025-04-10"`
+
+#### 2.1.5 Period Input
+- **PC Version Get**: `formaItems.product_72_terms.getItemData.%Field ID%()`
+- **PC Version Set**: `formaItems.product_72_terms.setItemData.%Field ID%(Object arg)`
+- **Smartphone Get**: `formaItems.product_72_terms.getItemDataSp(Object arg)`
+- **Smartphone Set**: `formaItems.product_72_terms.setItemDataSp(Object arg)`
+- **Return Type**: String (period format depends on system settings)
+- **Set Value Structure**: `args.data.%Field ID% = "2025-04-01 to 2025-04-30"`
+- **Smartphone Set Structure**: `args.inputDataList.%Field ID% = "2025-04-01 to 2025-04-30"`
+
+#### 2.1.6 Hidden Parameters
+- **PC Version Get**: `formaItems.product_72_hidden.getItemData.%Field ID%()`
+- **PC Version Set**: `formaItems.product_72_hidden.setItemData.%Field ID%(Object arg)`
+- **Smartphone Get**: `formaItems.product_72_hidden.getItemDataSp(Object arg)`
+- **Smartphone Set**: `formaItems.product_72_hidden.setItemDataSp(Object arg)`
+- **Return Type**: String
+- **Set Value Structure**: `args.data.%Field ID% = "hidden value"`
+- **Smartphone Set Structure**: `args.inputDataList.%Field ID% = "hidden value"`
+
+### 2.2 Selection Input Elements
+
+#### 2.2.1 List Selection
+- **PC Version Get**: `formaItems.product_80_itemSelect.getItemData.%Field ID%()`
+- **PC Version Set**: `formaItems.product_80_itemSelect.setItemData.%Field ID%(Object arg)`
+- **Smartphone Get**: `formaItems.product_72_itemSelect.getItemDataSp(Object arg)`
+- **Smartphone Set**: `formaItems.product_72_itemSelect.setItemDataSp(Object arg)`
+- **Return Type**: String (selected value)
+- **Set Value Structure**: `args.data.%Field ID% = "selected value"`
+- **Smartphone Set Structure**: `args.inputDataList.%Field ID% = "selected value"`
+
+#### 2.2.2 Checkbox
+- **PC Version Get**: `formaItems.product_80_checkbox.getItemData.%Field ID%()`
+- **PC Version Set**: `formaItems.product_80_checkbox.setItemData.%Field ID%(Object arg)`
+- **Smartphone Get**: `formaItems.product_80_checkbox.getItemDataSp(Object arg)`
+- **Smartphone Set**: `formaItems.product_80_checkbox.setItemDataSp(Object arg)`
+- **Return Type**: String (comma-separated selected values)
+- **Set Value Structure**: `args.data.%Field ID% = "value1,value2,value3"`
+- **Smartphone Set Structure**: `args.inputDataList.%Field ID% = "value1,value2,value3"`
+
+#### 2.2.3 Radio Button
+- **PC Version Get**: `formaItems.product_80_radio.getItemData.%Field ID%()`
+- **PC Version Set**: `formaItems.product_80_radio.setItemData.%Field ID%(Object arg)`
+- **Smartphone Get**: `formaItems.product_80_radio.getItemDataSp(Object arg)`
+- **Smartphone Set**: `formaItems.product_80_radio.setItemDataSp(Object arg)`
+- **Return Type**: String (selected value)
+- **Set Value Structure**: `args.data.%Field ID% = "selected value"`
+- **Smartphone Set Structure**: `args.inputDataList.%Field ID% = "selected value"`
+
+#### 2.2.4 Select Box
+- **PC Version Get**: `formaItems.product_80_selectbox.getItemData.%Field ID%()`
+- **PC Version Set**: `formaItems.product_80_selectbox.setItemData.%Field ID%(Object arg)`
+- **Smartphone Get**: `formaItems.product_80_selectbox.getItemDataSp(Object arg)`
+- **Smartphone Set**: `formaItems.product_80_selectbox.setItemDataSp(Object arg)`
+- **Return Type**: String (selected value)
+- **Set Value Structure**: `args.data.%Field ID% = "selected value"`
+- **Smartphone Set Structure**: `args.inputDataList.%Field ID% = "selected value"`
+
+#### 2.2.5 List Box
+- **PC Version Get**: `formaItems.product_80_listbox.getItemData.%Field ID%()`
+- **PC Version Set**: `formaItems.product_80_listbox.setItemData.%Field ID%(Object arg)`
+- **Smartphone Get**: `formaItems.product_80_listbox.getItemDataSp(Object arg)`
+- **Smartphone Set**: `formaItems.product_80_listbox.setItemDataSp(Object arg)`
+- **Return Type**: String (comma-separated selected values)
+- **Set Value Structure**: `args.data.%Field ID% = "value1,value2,value3"`
+- **Smartphone Set Structure**: `args.inputDataList.%Field ID% = "value1,value2,value3"`
+
+### 2.3 Complex Input Elements
+
+#### 2.3.1 Detail Table
+- **PC Version Get**: `formaItems.product_80_table.getItemData.%table ID%(rowId, inputIdList)`
+- **PC Version Set**: `formaItems.product_80_table.setItemData.%table ID%(Object arg [, Object option])`
+- **Smartphone Get**: `formaItems.product_80_table.getItemDataSp(Object arg)`
+- **Smartphone Set**: `formaItems.product_80_table.setItemDataSp(Object arg)`
+- **Get Parameters**: 
+  - `rowId`: String (empty for all rows) or Number (specific row index)
+  - `inputIdList`: Array of column field IDs to retrieve
+- **Return Type**: Array of objects containing column values
+- **Set Value Structure**: Complex structure for setting multiple rows and columns
+- **Row Index Handling**: 
+  - PC: "number of lines displayed on the screen"
+  - Smartphone: "number of lines displayed on the screen - 1"
+
+#### 2.3.2 Grid Table
+- **PC Version Get**: `formaItems.product_80_gridtable.getItemData.%table ID%(rowId, inputIdList)`
+- **PC Version Set**: `formaItems.product_80_gridtable.setItemData.%table ID%(Object arg [, Object option])`
+- **Smartphone Get**: `formaItems.product_80_gridtable.getItemDataSp(Object arg)`
+- **Smartphone Set**: `formaItems.product_80_gridtable.setItemDataSp(Object arg)`
+- **Get Parameters**: 
+  - `rowId`: String (empty for all rows) or Number (specific row index)
+  - `inputIdList`: Array of column field IDs to retrieve
+- **Return Type**: Array of objects containing column values
+- **Set Value Structure**: Complex structure for setting multiple rows and columns
+- **Row Index Handling**: 
+  - PC: "number of lines displayed on the screen" plus accounting for deleted rows
+  - Smartphone: "number of lines displayed on the screen - 1"
+- **Sorting Considerations**: Different behavior for single-column vs. multi-column sorting
+
+#### 2.3.3 Spreadsheet
+- **PC Version Get**: `formaItems.product_80_spreadsheet.getItemData.%Spreadsheet ID%([inputIdList])`
+- **PC Version Set**: `formaItems.product_80_spreadsheet.setItemData.%Spreadsheet ID%(Object arg)`
+- **Get Parameters**: 
+  - Optional `inputIdList`: Array of cell/column IDs to retrieve
+- **Return Type**: Object containing cell values and table data
+- **Set Value Structure**: Complex structure for setting cell values and table data
+- **Special Cell Types**:
+  - Checkbox cells: "true" (checked), "false" (unchecked), "" (indeterminate)
+  - Checkbox list cells: Comma-separated values
+
+### 2.4 Organizational Input Elements
+
+#### 2.4.1 User Selection
+- **PC Version Get**: `formaItems.product_72_userSelect.getItemData.%Field ID%()`
+- **PC Version Set**: `formaItems.product_72_userSelect.setItemData.%Field ID%(Object arg)`
+- **Smartphone Get**: `formaItems.product_72_userSelect.getItemDataSp(Object arg)`
+- **Smartphone Set**: `formaItems.product_72_userSelect.setItemDataSp(Object arg)`
+- **Return Type**: String (user ID)
+- **Set Value Structure**: `args.data.%Field ID% = "user_id"`
+- **Smartphone Set Structure**: `args.inputDataList.%Field ID% = "user_id"`
+
+#### 2.4.2 Organization Selection
+- **PC Version Get**: 
+  - Company code: `formaItems.product_72_departmentSelect.getItemData.%Field ID%_c()`
+  - Department set code: `formaItems.product_72_departmentSelect.getItemData.%Field ID%_s()`
+  - Organization code: `formaItems.product_72_departmentSelect.getItemData.%Field ID%()`
+- **PC Version Set**: Similar pattern with `setItemData`
+- **Smartphone Get/Set**: Similar pattern with `getItemDataSp`/`setItemDataSp`
+- **Return Type**: String (respective organizational code)
+- **Set Value Structure**: `args.data.%Field ID%_c = "company_code"` (similar for other components)
+
+#### 2.4.3 Organization/Post Selection
+- **PC Version Get**: 
+  - Company code: `formaItems.product_72_departmentPostSelect.getItemData.%Field ID%_c()`
+  - Department set code: `formaItems.product_72_departmentPostSelect.getItemData.%Field ID%_s()`
+  - Organization code: `formaItems.product_72_departmentPostSelect.getItemData.%Field ID%_d()`
+  - Post code: `formaItems.product_72_departmentPostSelect.getItemData.%Field ID%()`
+- **PC Version Set**: Similar pattern with `setItemData`
+- **Smartphone Get/Set**: Similar pattern with `getItemDataSp`/`setItemDataSp`
+- **Return Type**: String (respective organizational or post code)
+- **Set Value Structure**: `args.data.%Field ID%_c = "company_code"` (similar for other components)
+
+#### 2.4.4 Affiliation Selection
+- **PC Version Get**: 
+  - Company code: `formaItems.product_72_affiliationSelect.getItemData.%Field ID%_c()`
+  - Department set code: `formaItems.product_72_affiliationSelect.getItemData.%Field ID%_s()`
+  - Organization code: `formaItems.product_72_affiliationSelect.getItemData.%Field ID%()`
+- **PC Version Set**: Similar pattern with `setItemData`
+- **Smartphone Get/Set**: Similar pattern with `getItemDataSp`/`setItemDataSp`
+- **Return Type**: String (respective affiliation code)
+- **Set Value Structure**: `args.data.%Field ID%_c = "company_code"` (similar for other components)
+
+## 3. Parameter Structures and Return Values
+
+### 3.1 PC Version Parameters
+
+#### 3.1.1 Simple Field Operations
+- **Get Operation**: Generally no parameters required
+- **Set Operation**: Object with nested `data` object
+  ```javascript
+  var args = {
+    data: {
+      fieldId: "value"
+    }
+  };
+  ```
+
+#### 3.1.2 Table Operations
+- **Get Operation**: 
+  ```javascript
+  var rowId = ""; // Empty string for all rows, or specific row index
+  var inputIdList = ["column1", "column2", "column3"];
+  ```
+- **Set Operation**: 
+  ```javascript
+  var args = {
+    data: {
+      tableId: [
+        {
+          column1: "value1",
+          column2: "value2"
+        },
+        {
+          column1: "value3",
+          column2: "value4"
+        }
+      ]
+    }
+  };
+  var option = {
+    indexKey: rowIndex // For specific row updates
+  };
+  ```
+
+#### 3.1.3 Spreadsheet Operations
+- **Get Operation**: Optional array of cell/column IDs
+- **Set Operation**: 
+  ```javascript
+  var args = {
+    data: {
+      cellId1: "value1",
+      cellId2: "value2",
+      tableId: [
+        {
+          column1: "value1",
+          column2: "value2"
+        }
+      ]
+    }
+  };
+  ```
+
+### 3.2 Smartphone Version Parameters
+
+#### 3.2.1 Simple Field Operations
+- **Get Operation**: 
+  ```javascript
+  var args = {
+    input_id: "fieldId"
+  };
+  ```
+- **Set Operation**: 
+  ```javascript
+  var args = {
+    input_id: "fieldId",
+    inputDataList: {
+      fieldId: "value"
+    }
+  };
+  ```
+
+#### 3.2.2 Table Operations
+- **Get Operation**: 
+  ```javascript
+  var args = {
+    tableId: "tableId",
+    rowId: "", // Empty string for all rows, or specific row index
+    inputIdList: ["column1", "column2", "column3"]
+  };
+  ```
+- **Set Operation**: 
+  ```javascript
+  var args = {
+    tableId: "tableId",
+    rowId: rowIndex, // For specific row updates
+    dataInputId: ["column1", "column2"],
+    inputDataList: [
+      {
+        column1: "value1",
+        column2: "value2"
+      }
+    ]
+  };
+  ```
+
+### 3.3 Return Value Structures
+
+#### 3.3.1 Simple Fields
+- **Text/Number/Date Fields**: String value
+- **Multi-select Controls**: Comma-separated string of selected values
+
+#### 3.3.2 Tables
+- **Array of Objects**: Each object represents a row with properties for columns
+  ```javascript
+  [
+    {
+      column1: "value1",
+      column2: "value2"
+    },
+    {
+      column1: "value3",
+      column2: "value4"
+    }
+  ]
+  ```
+
+#### 3.3.3 Spreadsheets
+- **Complex Object**: Contains individual cell values and table data
+  ```javascript
+  {
+    cellId1: "value1",
+    cellId2: "value2",
+    tableId: [
+      {
+        column1: "value1",
+        column2: "value2"
+      }
+    ]
+  }
+  ```
+
+## 4. Comprehensive Code Examples
+
+### 4.1 Basic Field Operations
+
+#### 4.1.1 Text Field Operations (PC)
+```javascript
+// Get text field value
+(function($) {
+  var customerName = formaItems.product_72_textbox.getItemData.customer_name();
+  console.log("Customer name: " + customerName);
+  
+  // Validate and process
+  if (customerName && customerName.trim() !== "") {
+    // Process valid input
+    imuiAlert("Hello, " + customerName + "!");
+  } else {
+    imuiAlert("Please enter your name.");
+  }
+}) (jQuery);
+
+// Set text field value
+(function($) {
+  var args = {};
+  args.data = {};
+  args.data.customer_name = "John Doe";
+  formaItems.product_72_textbox.setItemData.customer_name(args);
+  
+  // Set multiple fields
+  args.data.email = "john.doe@example.com";
+  formaItems.product_72_textbox.setItemData.email(args);
+  args.data.phone = "555-1234";
+  formaItems.product_72_textbox.setItemData.phone(args);
+}) (jQuery);
+```
+
+#### 4.1.2 Text Field Operations (Smartphone)
+```javascript
+// Get text field value
+(function($) {
+  var args = {};
+  args.input_id = "customer_name";
+  var customerName = formaItems.product_72_textbox.getItemDataSp(args);
+  
+  // Validate and process
+  if (customerName && customerName.trim() !== "") {
+    imspAlert("Hello, " + customerName + "!");
+  } else {
+    imspAlert("Please enter your name.");
+  }
+}) (jQuery);
+
+// Set text field value
+(function($) {
+  var args = {};
+  args.input_id = "customer_name";
+  args.inputDataList = {};
+  args.inputDataList.customer_name = "John Doe";
+  formaItems.product_72_textbox.setItemDataSp(args);
+}) (jQuery);
+```
+
+#### 4.1.3 Number Field Operations with Validation
+```javascript
+// Get and validate number field
+(function($) {
+  var quantity = formaItems.product_72_number.getItemData.quantity();
+  var unitPrice = formaItems.product_72_number.getItemData.unit_price();
+  
+  // Convert to numbers and validate
+  quantity = parseInt(quantity) || 0;
+  unitPrice = parseFloat(unitPrice) || 0;
+  
+  if (quantity <= 0) {
+    imuiAlert("Quantity must be greater than zero.");
+    return;
+  }
+  
+  if (unitPrice <= 0) {
+    imuiAlert("Unit price must be greater than zero.");
+    return;
+  }
+  
+  // Calculate total
+  var total = quantity * unitPrice;
+  
+  // Update total field
+  var args = {};
+  args.data = {};
+  args.data.total_price = total.toFixed(2);
+  formaItems.product_72_number.setItemData.total_price(args);
+}) (jQuery);
+```
+
+#### 4.1.4 Date Field Operations
+```javascript
+// Get date and calculate days remaining
+(function($) {
+  var dueDate = formaItems.product_72_calendar.getItemData.due_date();
+  
+  if (dueDate) {
+    // Parse the date (format may vary based on system settings)
+    var dueDateParts = dueDate.split('-');
+    var dueDateTime = new Date(dueDateParts[0], dueDateParts[1] - 1, dueDateParts[2]);
+    var today = new Date();
+    
+    // Reset time components for accurate day calculation
+    today.setHours(0, 0, 0, 0);
+    dueDateTime.setHours(0, 0, 0, 0);
+    
+    // Calculate days remaining
+    var timeDiff = dueDateTime.getTime() - today.getTime();
+    var daysRemaining = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    
+    if (daysRemaining < 0) {
+      imuiAlert("Due date has passed by " + Math.abs(daysRemaining) + " days.");
+    } else if (daysRemaining === 0) {
+      imuiAlert("Due date is today!");
+    } else {
+      imuiAlert(daysRemaining + " days remaining until due date.");
+    }
+  } else {
+    imuiAlert("Please select a due date.");
+  }
+}) (jQuery);
+
+// Set date to 30 days from now
+(function($) {
+  var today = new Date();
+  var futureDate = new Date();
+  futureDate.setDate(today.getDate() + 30);
+  
+  // Format date as YYYY-MM-DD
+  var formattedDate = futureDate.getFullYear() + '-' + 
+                     (futureDate.getMonth() + 1).toString().padStart(2, '0') + '-' + 
+                     futureDate.getDate().toString().padStart(2, '0');
+  
+  var args = {};
+  args.data = {};
+  args.data.target_date = formattedDate;
+  formaItems.product_72_calendar.setItemData.target_date(args);
+}) (jQuery);
+```
+
+### 4.2 Selection Control Operations
+
+#### 4.2.1 Checkbox Operations
+```javascript
+// Get selected checkbox values
+(function($) {
+  var selectedOptions = formaItems.product_80_checkbox.getItemData.preferences();
+  
+  if (selectedOptions) {
+    var options = selectedOptions.split(',');
+    console.log("Number of selected preferences: " + options.length);
+    
+    for (var i = 0; i < options.length; i++) {
+      console.log("Preference " + (i + 1) + ": " + options[i]);
+    }
+    
+    // Check for specific selections
+    if (options.indexOf("email_notifications") > -1) {
+      console.log("User wants email notifications");
+    }
+    
+    if (options.indexOf("sms_notifications") > -1) {
+      console.log("User wants SMS notifications");
+    }
+  } else {
+    console.log("No preferences selected");
+  }
+}) (jQuery);
+
+// Set checkbox values
+(function($) {
+  var args = {};
+  args.data = {};
+  args.data.preferences = "email_notifications,weekly_digest,product_updates";
+  formaItems.product_80_checkbox.setItemData.preferences(args);
+}) (jQuery);
+```
+
+#### 4.2.2 Radio Button Operations
+```javascript
+// Get selected radio button value
+(function($) {
+  var paymentMethod = formaItems.product_80_radio.getItemData.payment_method();
+  
+  if (paymentMethod) {
+    console.log("Selected payment method: " + paymentMethod);
+    
+    // Conditional logic based on selection
+    if (paymentMethod === "credit_card") {
+      // Show credit card fields
+      // This would require additional DOM manipulation not shown here
+    } else if (paymentMethod === "bank_transfer") {
+      // Show bank transfer fields
+    } else if (paymentMethod === "paypal") {
+      // Show PayPal fields
+    }
+  } else {
+    console.log("No payment method selected");
+  }
+}) (jQuery);
+
+// Set radio button value
+(function($) {
+  var args = {};
+  args.data = {};
+  args.data.payment_method = "credit_card";
+  formaItems.product_80_radio.setItemData.payment_method(args);
+}) (jQuery);
+```
+
+#### 4.2.3 Select Box Operations
+```javascript
+// Get selected value from select box
+(function($) {
+  var selectedCountry = formaItems.product_80_selectbox.getItemData.country();
+  
+  if (selectedCountry) {
+    console.log("Selected country: " + selectedCountry);
+    
+    // Update state/province select box based on country
+    var statesArgs = {};
+    statesArgs.data = {};
+    
+    if (selectedCountry === "US") {
+      // For US, set a default state and could populate a state select box
+      statesArgs.data.state = "CA";
+    } else if (selectedCountry === "CA") {
+      // For Canada, set a default province
+      statesArgs.data.state = "ON";
+    } else {
+      // For other countries, clear the state field
+      statesArgs.data.state = "";
+    }
+    
+    formaItems.product_80_selectbox.setItemData.state(statesArgs);
+  } else {
+    console.log("No country selected");
+  }
+}) (jQuery);
+```
+
+#### 4.2.4 List Box Operations with Filtering
+```javascript
+// Get selected values from list box and filter related content
+(function($) {
+  var selectedCategories = formaItems.product_80_listbox.getItemData.product_categories();
+  
+  if (selectedCategories) {
+    var categories = selectedCategories.split(',');
+    console.log("Selected " + categories.length + " categories");
+    
+    // Example: Filter a table based on selected categories
+    var rowId = "";
+    var inputIdList = ["product_id", "product_name", "category"];
+    var result = formaItems.product_80_table.getItemData.product_list(rowId, inputIdList);
+    
+    var filteredProducts = [];
+    
+    for (var i = 0; i < result.length; i++) {
+      // Check if the product's category is in the selected categories
+      if (categories.indexOf(result[i].category) > -1) {
+        filteredProducts.push(result[i]);
+      }
+    }
+    
+    console.log("Found " + filteredProducts.length + " products matching selected categories");
+    
+    // Process filtered products (example: update a visual display)
+    for (var j = 0; j < filteredProducts.length; j++) {
+      console.log("Matching product: " + filteredProducts[j].product_name);
+    }
+  } else {
+    console.log("No categories selected");
+  }
+}) (jQuery);
+```
+
+### 4.3 Table Operations
+
+#### 4.3.1 Detail Table - Getting All Rows
+```javascript
+// Get all rows from a detail table
+(function($) {
+  var rowId = ""; // Empty string means get all rows
+  var inputIdList = ["product_id", "product_name", "quantity", "unit_price"];
+  
+  var result = formaItems.product_80_table.getItemData.order_items(rowId, inputIdList);
+  
+  console.log("Total order items: " + result.length);
+  
+  // Calculate order total
+  var orderTotal = 0;
+  var itemCount = 0;
+  
+  for (var i = 0; i < result.length; i++) {
+    var quantity = parseInt(result[i].quantity) || 0;
+    var unitPrice = parseFloat(result[i].unit_price) || 0;
+    var itemTotal = quantity * unitPrice;
+    
+    console.log("Item: " + result[i].product_name + 
+                ", Quantity: " + quantity + 
+                ", Unit Price: " + unitPrice + 
+                ", Total: " + itemTotal.toFixed(2));
+    
+    orderTotal += itemTotal;
+    itemCount += quantity;
+  }
+  
+  console.log("Order Summary - Items: " + itemCount + ", Total: " + orderTotal.toFixed(2));
+  
+  // Update order summary fields
+  var args = {};
+  args.data = {};
+  args.data.total_items = itemCount.toString();
+  args.data.order_total = orderTotal.toFixed(2);
+  
+  formaItems.product_72_number.setItemData.total_items(args);
+  formaItems.product_72_number.setItemData.order_total(args);
+}) (jQuery);
+```
+
+#### 4.3.2 Detail Table - Getting Specific Row
+```javascript
+// Get a specific row from a detail table
+(function($) {
+  var rowId = 2; // Get the third row (index 2)
+  var inputIdList = ["product_id", "product_name", "quantity", "unit_price"];
+  
+  var result = formaItems.product_80_table.getItemData.order_items(rowId, inputIdList);
+  
+  if (result && result.length > 0) {
+    var item = result[0]; // The result is still an array, but with one item
+    
+    console.log("Selected Product: " + item.product_name);
+    console.log("Quantity: " + item.quantity);
+    console.log("Unit Price: " + item.unit_price);
+    
+    var totalPrice = (parseInt(item.quantity) || 0) * (parseFloat(item.unit_price) || 0);
+    console.log("Total Price: " + totalPrice.toFixed(2));
+    
+    // Highlight this row or perform specific operations
+    // This would typically involve DOM manipulation not shown here
+  } else {
+    console.log("Row not found or no data available");
+  }
+}) (jQuery);
+```
+
+#### 4.3.3 Grid Table - Setting All Rows
+```javascript
+// Update all rows in a grid table
+(function($) {
+  // First, get the current data
+  var rowId = "";
+  var inputIdList = ["product_id", "in_stock", "reorder_level", "current_stock"];
+  
+  var currentData = formaItems.product_80_gridtable.getItemData.inventory(rowId, inputIdList);
+  
+  // Process the data and prepare updates
+  var args = {};
+  args.data = {};
+  args.data.inventory = [];
+  
+  for (var i = 0; i < currentData.length; i++) {
+    args.data.inventory[i] = {};
+    args.data.inventory[i].product_id = currentData[i].product_id;
+    
+    // Calculate if item needs reordering
+    var currentStock = parseInt(currentData[i].current_stock) || 0;
+    var reorderLevel = parseInt(currentData[i].reorder_level) || 0;
+    
+    if (currentStock <= reorderLevel) {
+      args.data.inventory[i].in_stock = "false";
+      console.log("Product " + currentData[i].product_id + " needs reordering");
+    } else {
+      args.data.inventory[i].in_stock = "true";
+      console.log("Product " + currentData[i].product_id + " has sufficient stock");
+    }
+  }
+  
+  // Apply the updates to the grid table
+  var option = {};
+  formaItems.product_80_gridtable.setItemData.inventory(args, option);
+}) (jQuery);
+```
+
+#### 4.3.4 Grid Table - Setting Specific Row
+```javascript
+// Update a specific row in a grid table
+(function($) {
+  var rowIndex = 3; // Update the fourth row (index 3)
+  
+  var args = {};
+  args.data = {};
+  args.data.inventory = [];
+  args.data.inventory[0] = {}; // Always use index 0 when updating a specific row
+  
+  args.data.inventory[0].product_name = "Updated Product Name";
+  args.data.inventory[0].price = "29.99";
+  args.data.inventory[0].in_stock = "true";
+  args.data.inventory[0].featured = "false";
+  
+  var option = {};
+  option.indexKey = rowIndex;
+  
+  formaItems.product_80_gridtable.setItemData.inventory(args, option);
+  
+  console.log("Updated product information at row " + rowIndex);
+}) (jQuery);
+```
+
+#### 4.3.5 Grid Table - Row-Specific Operations with Sorting Considerations
+```javascript
+// Grid table operation considering sorting behavior
+(function($) {
+  // First, determine if we're using single or multiple column sorting
+  // This would typically come from application state or user preferences
+  var usingSingleColumnSort = true; // Example flag
+  
+  // Get all rows first to understand the data
+  var rowId = "";
+  var inputIdList = ["id", "name", "category", "price", "stock"];
+  
+  var allProducts = formaItems.product_80_gridtable.getItemData.products(rowId, inputIdList);
+  
+  console.log("Total products: " + allProducts.length);
+  
+  // When using single column sort, we need to be careful about row references
+  if (usingSingleColumnSort) {
+    console.log("Using single column sort - displayed data will be sorted after reflection");
+    
+    // Find a specific product by ID rather than by row index
+    var targetProductId = "PRD-1234";
+    var foundProductIndex = -1;
+    
+    for (var i = 0; i < allProducts.length; i++) {
+      if (allProducts[i].id === targetProductId) {
+        foundProductIndex = i;
+        break;
+      }
+    }
+    
+    if (foundProductIndex >= 0) {
+      console.log("Found target product at index " + foundProductIndex);
+      
+      // Update this specific product
+      var args = {};
+      args.data = {};
+      args.data.products = [];
+      args.data.products[0] = {}; // Always use index 0 for specific updates
+      
+      args.data.products[0].stock = "250"; // Update the stock level
+      
+      var option = {};
+      option.indexKey = foundProductIndex;
+      
+      formaItems.product_80_gridtable.setItemData.products(args, option);
+      console.log("Updated stock level for product " + targetProductId);
+    } else {
+      console.log("Product " + targetProductId + " not found");
+    }
+  } else {
+    console.log("Using multiple column sort - sorting not applied after reflection");
+    
+    // In this case, we can update all rows at once
+    var args = {};
+    args.data = {};
+    args.data.products = [];
+    
+    for (var j = 0; j < allProducts.length; j++) {
+      args.data.products[j] = {};
+      
+      // Apply a 10% discount to all products
+      var currentPrice = parseFloat(allProducts[j].price) || 0;
+      var discountedPrice = currentPrice * 0.9;
+      
+      args.data.products[j].price = discountedPrice.toFixed(2);
+      args.data.products[j].name = allProducts[j].name + " (10% OFF)";
+    }
+    
+    var option = {};
+    formaItems.product_80_gridtable.setItemData.products(args, option);
+    console.log("Applied 10% discount to all products");
+  }
+}) (jQuery);
+```
+
+### 4.4 Spreadsheet Operations
+
+#### 4.4.1 Getting Spreadsheet Data
+```javascript
+// Get all data from a spreadsheet
+(function($) {
+  var result = formaItems.product_80_spreadsheet.getItemData.financial_report();
+  
+  // Access individual cell values
+  console.log("Revenue Q1: " + result.revenue_q1);
+  console.log("Revenue Q2: " + result.revenue_q2);
+  console.log("Revenue Q3: " + result.revenue_q3);
+  console.log("Revenue Q4: " + result.revenue_q4);
+  
+  console.log("Expenses Q1: " + result.expenses_q1);
+  console.log("Expenses Q2: " + result.expenses_q2);
+  console.log("Expenses Q3: " + result.expenses_q3);
+  console.log("Expenses Q4: " + result.expenses_q4);
+  
+  // Access table data within the spreadsheet
+  if (result.expense_details && result.expense_details.length > 0) {
+    console.log("Expense details:");
+    
+    for (var i = 0; i < result.expense_details.length; i++) {
+      console.log("Category: " + result.expense_details[i].category + 
+                  ", Amount: " + result.expense_details[i].amount + 
+                  ", Quarter: " + result.expense_details[i].quarter);
+    }
+  }
+  
+  // Calculate totals
+  var totalRevenue = parseFloat(result.revenue_q1) + 
+                    parseFloat(result.revenue_q2) + 
+                    parseFloat(result.revenue_q3) + 
+                    parseFloat(result.revenue_q4);
+  
+  var totalExpenses = parseFloat(result.expenses_q1) + 
+                     parseFloat(result.expenses_q2) + 
+                     parseFloat(result.expenses_q3) + 
+                     parseFloat(result.expenses_q4);
+  
+  var netProfit = totalRevenue - totalExpenses;
+  
+  console.log("Total Revenue: " + totalRevenue.toFixed(2));
+  console.log("Total Expenses: " + totalExpenses.toFixed(2));
+  console.log("Net Profit: " + netProfit.toFixed(2));
+}) (jQuery);
+```
+
+#### 4.4.2 Updating Spreadsheet Cells and Tables
+```javascript
+// Update spreadsheet cells and table data
+(function($) {
+  // First, get the current data to work with
+  var currentData = formaItems.product_80_spreadsheet.getItemData.budget_planner();
+  
+  // Prepare updates
+  var args = {};
+  args.data = {};
+  
+  // Update individual cells
+  args.data.revenue_target = "1000000.00";
+  args.data.expense_cap = "750000.00";
+  args.data.profit_margin = "25";
+  
+  // Calculate values based on business logic
+  var revenueTarget = 1000000.00;
+  var expenseCap = 750000.00;
+  var profitMargin = 25;
+  
+  var targetProfit = revenueTarget * (profitMargin / 100);
+  args.data.target_profit = targetProfit.toFixed(2);
+  
+  // Special handling for checkbox cells
+  args.data.include_tax = "true"; // Checked
+  args.data.include_shipping = "false"; // Unchecked
+  args.data.include_insurance = ""; // Indeterminate
+  
+  // Update table data
+  args.data.department_budgets = [];
+  
+  // Create new department budget entries
+  args.data.department_budgets[0] = {
+    department: "Marketing",
+    q1_budget: "50000.00",
+    q2_budget: "60000.00",
+    q3_budget: "55000.00",
+    q4_budget: "70000.00"
+  };
+  
+  args.data.department_budgets[1] = {
+    department: "Development",
+    q1_budget: "80000.00",
+    q2_budget: "85000.00",
+    q3_budget: "85000.00",
+    q4_budget: "90000.00"
+  };
+  
+  args.data.department_budgets[2] = {
+    department: "Sales",
+    q1_budget: "65000.00",
+    q2_budget: "75000.00",
+    q3_budget: "75000.00",
+    q4_budget: "80000.00"
+  };
+  
+  // Apply all updates to the spreadsheet
+  formaItems.product_80_spreadsheet.setItemData.budget_planner(args);
+  
+  console.log("Updated budget planner spreadsheet");
+}) (jQuery);
+```
+
+#### 4.4.3 Getting Specific Spreadsheet Elements
+```javascript
+// Get specific cells and columns from a spreadsheet
+(function($) {
+  var inputIdList = [];
+  inputIdList[0] = "quarterly_revenue"; // Cell ID
+  inputIdList[1] = "department"; // Table column ID
+  inputIdList[2] = "budget_amount"; // Table column ID
+  
+  var result = formaItems.product_80_spreadsheet.getItemData.finance_report(inputIdList);
+  
+  // Access the specific cell value
+  console.log("Quarterly Revenue: " + result.quarterly_revenue);
+  
+  // Access the specified table columns
+  if (result.departments && result.departments.length > 0) {
+    console.log("Department budgets:");
+    
+    var totalBudget = 0;
+    
+    for (var i = 0; i < result.departments.length; i++) {
+      console.log("Department: " + result.departments[i].department + 
+                  ", Budget: " + result.departments[i].budget_amount);
+      
+      totalBudget += parseFloat(result.departments[i].budget_amount) || 0;
+    }
+    
+    console.log("Total budget across all departments: " + totalBudget.toFixed(2));
+  }
+}) (jQuery);
+```
+
+### 4.5 Complex Implementation Patterns
+
+#### 4.5.1 Form Validation with Multiple Fields
+```javascript
+// Comprehensive form validation
+(function($) {
+  // Get values from multiple fields
+  var customerName = formaItems.product_72_textbox.getItemData.customer_name();
+  var email = formaItems.product_72_textbox.getItemData.email();
+  var phoneNumber = formaItems.product_72_textbox.getItemData.phone();
+  var age = formaItems.product_72_number.getItemData.age();
+  var country = formaItems.product_80_selectbox.getItemData.country();
+  var agreeToTerms = formaItems.product_80_checkbox.getItemData.terms_agreement();
+  
+  // Initialize validation
+  var errors = [];
+  var isValid = true;
+  
+  // Validate customer name
+  if (!customerName || customerName.trim() === "") {
+    errors.push("Customer name is required");
+    isValid = false;
+  } else if (customerName.trim().length < 2) {
+    errors.push("Customer name must be at least 2 characters long");
+    isValid = false;
+  }
+  
+  // Validate email
+  var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || email.trim() === "") {
+    errors.push("Email address is required");
+    isValid = false;
+  } else if (!emailPattern.test(email)) {
+    errors.push("Invalid email format");
+    isValid = false;
+  }
+  
+  // Validate phone number (simple validation)
+  if (phoneNumber && phoneNumber.trim() !== "") {
+    var phonePattern = /^\d{3}[-\s]?\d{3}[-\s]?\d{4}$/;
+    if (!phonePattern.test(phoneNumber)) {
+      errors.push("Invalid phone number format (should be XXX-XXX-XXXX)");
+      isValid = false;
+    }
+  }
+  
+  // Validate age
+  var ageValue = parseInt(age) || 0;
+  if (ageValue <= 0) {
+    errors.push("Age must be provided");
+    isValid = false;
+  } else if (ageValue < 18) {
+    errors.push("You must be at least 18 years old");
+    isValid = false;
+  } else if (ageValue > 120) {
+    errors.push("Please enter a valid age");
+    isValid = false;
+  }
+  
+  // Validate country selection
+  if (!country || country.trim() === "") {
+    errors.push("Please select your country");
+    isValid = false;
+  }
+  
+  // Validate terms agreement
+  if (!agreeToTerms || agreeToTerms.trim() === "") {
+    errors.push("You must agree to the terms and conditions");
+    isValid = false;
+  }
+  
+  // Display validation results
+  if (!isValid) {
+    var errorMessage = "Please correct the following errors:\n\n";
+    for (var i = 0; i < errors.length; i++) {
+      errorMessage += "- " + errors[i] + "\n";
+    }
+    
+    imuiAlert(errorMessage);
+    return false;
+  } else {
+    imuiAlert("Form validated successfully!");
+    // Proceed with form submission or further processing
+    return true;
+  }
+}) (jQuery);
+```
+
+#### 4.5.2 Dynamic Form Calculations and Conditional Display
+```javascript
+// Dynamic calculations and conditional display
+(function($) {
+  // Get values from order form
+  var quantity = parseInt(formaItems.product_72_number.getItemData.quantity()) || 0;
+  var unitPrice = parseFloat(formaItems.product_72_number.getItemData.unit_price()) || 0;
+  var discountCode = formaItems.product_72_textbox.getItemData.discount_code();
+  var shippingMethod = formaItems.product_80_radio.getItemData.shipping_method();
+  var giftWrap = formaItems.product_80_checkbox.getItemData.gift_wrap();
+  
+  // Initialize calculation variables
+  var subtotal = quantity * unitPrice;
+  var discountRate = 0;
+  var discountAmount = 0;
+  var shippingCost = 0;
+  var giftWrapFee = 0;
+  var taxRate = 0.08; // Example tax rate (8%)
+  var taxAmount = 0;
+  var totalAmount = 0;
+  
+  // Apply discount code if valid
+  if (discountCode && discountCode.trim() !== "") {
+    // In a real application, this would validate against a database
+    // This is a simplified example
+    if (discountCode === "SAVE10") {
+      discountRate = 0.1; // 10% discount
+      console.log("Applied 10% discount");
+    } else if (discountCode === "SAVE20") {
+      discountRate = 0.2; // 20% discount
+      console.log("Applied 20% discount");
+    } else {
+      console.log("Invalid discount code: " + discountCode);
+    }
+  }
+  
+  // Calculate discount amount
+  discountAmount = subtotal * discountRate;
+  
+  // Determine shipping cost based on method
+  if (shippingMethod === "standard") {
+    shippingCost = 5.99;
+  } else if (shippingMethod === "express") {
+    shippingCost = 15.99;
+  } else if (shippingMethod === "overnight") {
+    shippingCost = 29.99;
+  }
+  
+  // Add gift wrap fee if selected
+  if (giftWrap && giftWrap.indexOf("yes") > -1) {
+    giftWrapFee = 4.99;
+  }
+  
+  // Calculate tax (applied after discounts, before shipping and gift wrap)
+  var taxableAmount = subtotal - discountAmount;
+  taxAmount = taxableAmount * taxRate;
+  
+  // Calculate total
+  totalAmount = subtotal - discountAmount + taxAmount + shippingCost + giftWrapFee;
+  
+  // Update order summary fields
+  var args = {};
+  args.data = {};
+  
+  args.data.subtotal = subtotal.toFixed(2);
+  args.data.discount_amount = discountAmount.toFixed(2);
+  args.data.tax_amount = taxAmount.toFixed(2);
+  args.data.shipping_cost = shippingCost.toFixed(2);
+  args.data.gift_wrap_fee = giftWrapFee.toFixed(2);
+  args.data.order_total = totalAmount.toFixed(2);
+  
+  // Update numeric fields
+  formaItems.product_72_number.setItemData.subtotal(args);
+  formaItems.product_72_number.setItemData.discount_amount(args);
+  formaItems.product_72_number.setItemData.tax_amount(args);
+  formaItems.product_72_number.setItemData.shipping_cost(args);
+  formaItems.product_72_number.setItemData.gift_wrap_fee(args);
+  formaItems.product_72_number.setItemData.order_total(args);
+  
+  // Conditional display logic - determine if order qualifies for free shipping
+  var freeShippingThreshold = 100;
+  var qualifiesForFreeShipping = subtotal >= freeShippingThreshold;
+  
+  if (qualifiesForFreeShipping) {
+    // In a real application, this would update the UI
+    console.log("Order qualifies for free shipping!");
+    
+    // Enable the free shipping option
+    // This would typically involve DOM manipulation not shown here
+  } else {
+    var amountAwayFromFreeShipping = freeShippingThreshold - subtotal;
+    console.log("Add $" + amountAwayFromFreeShipping.toFixed(2) + " more to qualify for free shipping");
+    
+    // Update a message field with this information
+    args.data.free_shipping_message = "Add $" + amountAwayFromFreeShipping.toFixed(2) + " more to qualify for free shipping";
+    formaItems.product_72_textbox.setItemData.free_shipping_message(args);
+  }
+}) (jQuery);
+```
+
+#### 4.5.3 Table Data Aggregation and Analysis
+```javascript
+// Table data aggregation and analysis
+(function($) {
+  // Get all rows from a sales data table
+  var rowId = "";
+  var inputIdList = ["sales_date", "product_id", "quantity", "unit_price", "region"];
+  
+  var salesData = formaItems.product_80_table.getItemData.sales_records(rowId, inputIdList);
+  
+  console.log("Total sales records: " + salesData.length);
+  
+  if (salesData.length === 0) {
+    console.log("No sales data available");
+    return;
+  }
+  
+  // Initialize aggregation variables
+  var totalRevenue = 0;
+  var totalUnitsSold = 0;
+  var salesByRegion = {};
+  var salesByProduct = {};
+  var salesByMonth = {};
+  
+  // Process each sales record
+  for (var i = 0; i < salesData.length; i++) {
+    var record = salesData[i];
+    var quantity = parseInt(record.quantity) || 0;
+    var unitPrice = parseFloat(record.unit_price) || 0;
+    var revenue = quantity * unitPrice;
+    var region = record.region || "Unknown";
+    var productId = record.product_id || "Unknown";
+    
+    // Parse date (assuming format YYYY-MM-DD)
+    var dateComponents = record.sales_date ? record.sales_date.split('-') : null;
+    var month = dateComponents && dateComponents.length >= 2 ? dateComponents[1] : "Unknown";
+    var monthName;
+    
+    switch (month) {
+      case "01": monthName = "January"; break;
+      case "02": monthName = "February"; break;
+      case "03": monthName = "March"; break;
+      case "04": monthName = "April"; break;
+      case "05": monthName = "May"; break;
+      case "06": monthName = "June"; break;
+      case "07": monthName = "July"; break;
+      case "08": monthName = "August"; break;
+      case "09": monthName = "September"; break;
+      case "10": monthName = "October"; break;
+      case "11": monthName = "November"; break;
+      case "12": monthName = "December"; break;
+      default: monthName = "Unknown";
+    }
+    
+    // Update totals
+    totalRevenue += revenue;
+    totalUnitsSold += quantity;
+    
+    // Aggregate by region
+    if (!salesByRegion[region]) {
+      salesByRegion[region] = {
+        revenue: 0,
+        units: 0,
+        transactions: 0
+      };
+    }
+    salesByRegion[region].revenue += revenue;
+    salesByRegion[region].units += quantity;
+    salesByRegion[region].transactions += 1;
+    
+    // Aggregate by product
+    if (!salesByProduct[productId]) {
+      salesByProduct[productId] = {
+        revenue: 0,
+        units: 0
+      };
+    }
+    salesByProduct[productId].revenue += revenue;
+    salesByProduct[productId].units += quantity;
+    
+    // Aggregate by month
+    if (!salesByMonth[monthName]) {
+      salesByMonth[monthName] = {
+        revenue: 0,
+        units: 0
+      };
+    }
+    salesByMonth[monthName].revenue += revenue;
+    salesByMonth[monthName].units += quantity;
+  }
+  
+  // Display summary results
+  console.log("Sales Summary");
+  console.log("--------------");
+  console.log("Total Revenue: $" + totalRevenue.toFixed(2));
+  console.log("Total Units Sold: " + totalUnitsSold);
+  console.log("Average Revenue per Sale: $" + (totalRevenue / salesData.length).toFixed(2));
+  
+  // Display regional breakdown
+  console.log("\nSales by Region");
+  console.log("--------------");
+  for (var region in salesByRegion) {
+    console.log(region + ": $" + salesByRegion[region].revenue.toFixed(2) + 
+               " (" + salesByRegion[region].units + " units, " + 
+               salesByRegion[region].transactions + " transactions)");
+  }
+  
+  // Display product breakdown
+  console.log("\nTop Products by Revenue");
+  console.log("---------------------");
+  
+  // Convert to array for sorting
+  var productArray = [];
+  for (var product in salesByProduct) {
+    productArray.push({
+      id: product,
+      revenue: salesByProduct[product].revenue,
+      units: salesByProduct[product].units
+    });
+  }
+  
+  // Sort by revenue (descending)
+  productArray.sort(function(a, b) {
+    return b.revenue - a.revenue;
+  });
+  
+  // Display top 5 products
+  var topProductsToShow = Math.min(5, productArray.length);
+  for (var j = 0; j < topProductsToShow; j++) {
+    console.log((j + 1) + ". Product " + productArray[j].id + 
+               ": $" + productArray[j].revenue.toFixed(2) + 
+               " (" + productArray[j].units + " units)");
+  }
+  
+  // Display monthly breakdown
+  console.log("\nSales by Month");
+  console.log("--------------");
+  for (var month in salesByMonth) {
+    console.log(month + ": $" + salesByMonth[month].revenue.toFixed(2) + 
+               " (" + salesByMonth[month].units + " units)");
+  }
+  
+  // Update summary fields in the form
+  var args = {};
+  args.data = {};
+  
+  args.data.total_revenue = totalRevenue.toFixed(2);
+  args.data.total_units = totalUnitsSold.toString();
+  args.data.avg_order_value = (totalRevenue / salesData.length).toFixed(2);
+  
+  formaItems.product_72_number.setItemData.total_revenue(args);
+  formaItems.product_72_number.setItemData.total_units(args);
+  formaItems.product_72_number.setItemData.avg_order_value(args);
+}) (jQuery);
+```
+
+## 5. Special Considerations and Best Practices
+
+### 5.1 Grid Table Sorting Behavior
+
+#### 5.1.1 Single-Column Sorting
+- When all lines are reflected: The displayed data will be sorted after reflection
+- When specific rows are reflected: You must specify the row ID before sorting
+- When getting all rows: Data is retrieved in the order before sorting
+- When getting specific rows: You must specify the row ID before sorting (as it appears in UI)
+
+#### 5.1.2 Multiple-Column Sorting
+- When all lines are reflected: Sorting is not applied to the displayed data after reflection
+- When specific rows are reflected: You must specify the row ID before sorting
+- When getting all rows: Data is retrieved in the order after sorting
+- When getting specific rows: You must specify the row ID before replacement
+
+### 5.2 Row Indexing Considerations
+
+#### 5.2.1 PC Version
+- Use "the number of lines displayed on the screen" for row numbers
+- For grid tables, account for deleted rows in the row count calculation
+- Row indices start at 0
+
+#### 5.2.2 Smartphone Version
+- Use "the number of lines displayed on the screen - 1" for row numbers
+- Row indices start at 0
+
+### 5.3 Performance Optimization
+
+#### 5.3.1 Batch Operations
+```javascript
+// Batch update example - update multiple fields at once
+(function($) {
+  var args = {};
+  args.data = {};
+  
+  // Update multiple text fields in one operation
+  args.data.first_name = "John";
+  args.data.last_name = "Doe";
+  args.data.email = "john.doe@example.com";
+  args.data.phone = "555-1234";
+  
+  formaItems.product_72_textbox.setItemData.first_name(args);
+  formaItems.product_72_textbox.setItemData.last_name(args);
+  formaItems.product_72_textbox.setItemData.email(args);
+  formaItems.product_72_textbox.setItemData.phone(args);
+}) (jQuery);
+```
+
+#### 5.3.2 Minimize DOM Manipulations
+```javascript
+// Collect all UI updates before applying
+(function($) {
+  // Get table data
+  var rowId = "";
+  var inputIdList = ["product_id", "quantity", "price"];
+  var products = formaItems.product_80_table.getItemData.products(rowId, inputIdList);
+  
+  // Calculate totals
+  var totalQuantity = 0;
+  var totalValue = 0;
+  
+  for (var i = 0; i < products.length; i++) {
+    totalQuantity += parseInt(products[i].quantity) || 0;
+    totalValue += (parseInt(products[i].quantity) || 0) * (parseFloat(products[i].price) || 0);
+  }
+  
+  // Update all summary fields at once
+  var args = {};
+  args.data = {};
+  args.data.total_quantity = totalQuantity.toString();
+  args.data.total_value = totalValue.toFixed(2);
+  args.data.average_price = (totalValue / totalQuantity).toFixed(2);
+  
+  formaItems.product_72_number.setItemData.total_quantity(args);
+  formaItems.product_72_number.setItemData.total_value(args);
+  formaItems.product_72_number.setItemData.average_price(args);
+}) (jQuery);
+```
+
+### 5.4 Error Handling Patterns
+
+#### 5.4.1 Robust Error Handling
+```javascript
+// Error handling wrapper for API calls
+(function($) {
+  function safeGetValue(fieldType, fieldId) {
+    try {
+      var value;
+      
+      switch (fieldType) {
+        case "text":
+          value = formaItems.product_72_textbox.getItemData[fieldId]();
+          break;
+        case "number":
+          value = formaItems.product_72_number.getItemData[fieldId]();
+          break;
+        case "date":
+          value = formaItems.product_72_calendar.getItemData[fieldId]();
+          break;
+        case "checkbox":
+          value = formaItems.product_80_checkbox.getItemData[fieldId]();
+          break;
+        default:
+          throw new Error("Unsupported field type: " + fieldType);
+      }
+      
+      return value;
+    } catch (e) {
+      console.error("Error getting value for field " + fieldId + ": " + e.message);
+      return null;
+    }
+  }
+  
+  function safeSetValue(fieldType, fieldId, value) {
+    try {
+      var args = {};
+      args.data = {};
+      args.data[fieldId] = value;
+      
+      switch (fieldType) {
+        case "text":
+          formaItems.product_72_textbox.setItemData[fieldId](args);
+          break;
+        case "number":
+          formaItems.product_72_number.setItemData[fieldId](args);
+          break;
+        case "date":
+          formaItems.product_72_calendar.setItemData[fieldId](args);
+          break;
+        case "checkbox":
+          formaItems.product_80_checkbox.setItemData[fieldId](args);
+          break;
+        default:
+          throw new Error("Unsupported field type: " + fieldType);
+      }
+      
+      return true;
+    } catch (e) {
+      console.error("Error setting value for field " + fieldId + ": " + e.message);
+      return false;
+    }
+  }
+  
+  // Example usage
+  var customerName = safeGetValue("text", "customer_name");
+  var orderDate = safeGetValue("date", "order_date");
+  var quantity = safeGetValue("number", "quantity");
+  
+  if (customerName && orderDate && quantity) {
+    // Process the order
+    console.log("Processing order for " + customerName);
+    
+    // Update status field
+    safeSetValue("text", "order_status", "Processing");
+  } else {
+    console.log("Missing required fields");
+    
+    // Update status field with error
+    safeSetValue("text", "order_status", "Error: Missing information");
+  }
+}) (jQuery);
+```
+
+#### 5.4.2 Validation Utilities
+```javascript
+// Field validation utilities
+(function($) {
+  var validators = {
+    required: function(value) {
+      return value && value.trim() !== "";
+    },
+    email: function(value) {
+      if (!value) return true; // Only validate if provided
+      var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return pattern.test(value);
+    },
+    numeric: function(value) {
+      if (!value) return true; // Only validate if provided
+      return !isNaN(parseFloat(value)) && isFinite(value);
+    },
+    minLength: function(value, length) {
+      if (!value) return true; // Only validate if provided
+      return value.length >= length;
+    },
+    maxLength: function(value, length) {
+      if (!value) return true; // Only validate if provided
+      return value.length <= length;
+    },
+    minValue: function(value, min) {
+      if (!value) return true; // Only validate if provided
+      return parseFloat(value) >= min;
+    },
+    maxValue: function(value, max) {
+      if (!value) return true; // Only validate if provided
+      return parseFloat(value) <= max;
+    },
+    pattern: function(value, pattern) {
+      if (!value) return true; // Only validate if provided
+      var regex = new RegExp(pattern);
+      return regex.test(value);
+    }
+  };
+  
+  function validateField(fieldType, fieldId, validations) {
+    var value;
+    
+    // Get the field value
+    switch (fieldType) {
+      case "text":
+        value = formaItems.product_72_textbox.getItemData[fieldId]();
+        break;
+      case "number":
+        value = formaItems.product_72_number.getItemData[fieldId]();
+        break;
+      case "date":
+        value = formaItems.product_72_calendar.getItemData[fieldId]();
+        break;
+      default:
+        console.error("Unsupported field type: " + fieldType);
+        return {
+          valid: false,
+          errors: ["Unsupported field type"]
+        };
+    }
+    
+    var errors = [];
+    
+    // Apply each validation
+    for (var i = 0; i < validations.length; i++) {
+      var validation = validations[i];
+      var validatorFn = validators[validation.type];
+      
+      if (validatorFn) {
+        var isValid = validatorFn(value, validation.param);
+        
+        if (!isValid) {
+          errors.push(validation.message || "Validation failed: " + validation.type);
+        }
+      } else {
+        console.warn("Unknown validator: " + validation.type);
+      }
+    }
+    
+    return {
+      valid: errors.length === 0,
+      errors: errors
+    };
+  }
+  
+  // Example usage
+  var usernameValidation = validateField("text", "username", [
+    { type: "required", message: "Username is required" },
+    { type: "minLength", param: 3, message: "Username must be at least 3 characters" },
+    { type: "maxLength", param: 50, message: "Username cannot exceed 50 characters" },
+    { type: "pattern", param: "^[a-zA-Z0-9_]+$", message: "Username can only contain letters, numbers, and underscores" }
+  ]);
+  
+  if (!usernameValidation.valid) {
+    console.log("Username validation failed:");
+    for (var i = 0; i < usernameValidation.errors.length; i++) {
+      console.log("- " + usernameValidation.errors[i]);
+    }
+  } else {
+    console.log("Username is valid");
+  }
+  
+  var ageValidation = validateField("number", "age", [
+    { type: "required", message: "Age is required" },
+    { type: "numeric", message: "Age must be a number" },
+    { type: "minValue", param: 18, message: "You must be at least 18 years old" },
+    { type: "maxValue", param: 120, message: "Please enter a valid age" }
+  ]);
+  
+  if (!ageValidation.valid) {
+    console.log("Age validation failed:");
+    for (var j = 0; j < ageValidation.errors.length; j++) {
+      console.log("- " + ageValidation.errors[j]);
+    }
+  } else {
+    console.log("Age is valid");
+  }
+}) (jQuery);
+```
+
+### 5.5 Table Data Processing Utilities
+
+```javascript
+// Table data processing utilities
+(function($) {
+  // Get table data with column mapping
+  function getTableData(tableId, columnMapping) {
+    var rowId = "";
+    var inputIdList = Object.keys(columnMapping);
+    
+    var rawData = formaItems.product_80_table.getItemData[tableId](rowId, inputIdList);
+    var processedData = [];
+    
+    for (var i = 0; i < rawData.length; i++) {
+      var row = {};
+      
+      for (var colId in columnMapping) {
+        var colName = columnMapping[colId];
+        var rawValue = rawData[i][colId];
+        
+        // Convert types if necessary
+        if (colName.endsWith("_num")) {
+          row[colName] = parseFloat(rawValue) || 0;
+        } else if (colName.endsWith("_int")) {
+          row[colName] = parseInt(rawValue) || 0;
+        } else if (colName.endsWith("_date")) {
+          // Assume date format is YYYY-MM-DD
+          row[colName] = rawValue ? new Date(rawValue) : null;
+        } else if (colName.endsWith("_bool")) {
+          row[colName] = rawValue === "true" || rawValue === true;
+        } else {
+          row[colName] = rawValue;
+        }
+      }
+      
+      processedData.push(row);
+    }
+    
+    return processedData;
+  }
+  
+  // Group table data by a specific column
+  function groupByColumn(data, groupColumn) {
+    var groups = {};
+    
+    for (var i = 0; i < data.length; i++) {
+      var row = data[i];
+      var groupValue = row[groupColumn];
+      
+      if (!groupValue) {
+        groupValue = "(blank)";
+      }
+      
+      if (!groups[groupValue]) {
+        groups[groupValue] = [];
+      }
+      
+      groups[groupValue].push(row);
+    }
+    
+    return groups;
+  }
+  
+  // Calculate aggregates for grouped data
+  function calculateAggregates(groupedData, aggregations) {
+    var results = {};
+    
+    for (var group in groupedData) {
+      results[group] = {};
+      var rows = groupedData[group];
+      
+      for (var i = 0; i < aggregations.length; i++) {
+        var agg = aggregations[i];
+        var values = rows.map(function(row) { return row[agg.column]; });
+        
+        switch (agg.type) {
+          case "sum":
+            results[group][agg.name] = values.reduce(function(a, b) { return a + b; }, 0);
+            break;
+          case "avg":
+            var sum = values.reduce(function(a, b) { return a + b; }, 0);
+            results[group][agg.name] = sum / values.length;
+            break;
+          case "min":
+            results[group][agg.name] = Math.min.apply(null, values);
+            break;
+          case "max":
+            results[group][agg.name] = Math.max.apply(null, values);
+            break;
+          case "count":
+            results[group][agg.name] = values.length;
+            break;
+          default:
+            console.warn("Unknown aggregation type: " + agg.type);
+        }
+      }
+    }
+    
+    return results;
+  }
+  
+  // Example usage
+  var orderData = getTableData("orders", {
+    "product_id": "productId",
+    "quantity": "quantity_int",
+    "unit_price": "price_num",
+    "order_date": "date_date",
+    "region": "region"
+  });
+  
+  console.log("Loaded " + orderData.length + " orders");
+  
+  // Group by region
+  var ordersByRegion = groupByColumn(orderData, "region");
+  
+  // Calculate aggregates by region
+  var regionAggregates = calculateAggregates(ordersByRegion, [
+    { type: "sum", column: "quantity_int", name: "totalUnits" },
+    { type: "sum", column: "price_num", name: "totalRevenue" },
+    { type: "avg", column: "price_num", name: "avgPrice" },
+    { type: "count", column: "productId", name: "orderCount" }
+  ]);
+  
+  console.log("Regional Aggregates:");
+  for (var region in regionAggregates) {
+    console.log(region + ":");
+    console.log("  Total Units: " + regionAggregates[region].totalUnits);
+    console.log("  Total Revenue: $" + regionAggregates[region].totalRevenue.toFixed(2));
+    console.log("  Average Price: $" + regionAggregates[region].avgPrice.toFixed(2));
+    console.log("  Order Count: " + regionAggregates[region].orderCount);
+  }
+}) (jQuery);
+```
+
+## 6. Compatibility and Version Considerations
+
+### 6.1 Forward Compatibility Functions
+
+The API includes compatibility functions for certain element types across different versions:
+
+- List selection: both `product_80_itemSelect` and `product_72_itemSelect`
+- Detail table: both `product_80_table` and `product_72_table`
+- Checkbox: both `product_80_checkbox` and `product_72_checkbox`
+- Radio button: both `product_80_radio` and `product_72_radio`
+- Select box: both `product_80_selectbox` and `product_72_selectbox`
+- List box: both `product_80_listbox` and `product_72_listbox`
+
+### 6.2 Version-Specific Considerations
+
+- Product code `72` typically refers to earlier version elements
+- Product code `80` typically refers to newer version elements
+- When developing new applications, prefer using the newer `80` product code elements for better future compatibility
+- For maintenance of existing applications, use the product code matching the original implementation
+
+## 7. Integration with External Systems
+
+### 7.1 Recommendation for Complex Operations
+
+For complex data operations, it is not recommended to use the client-side script API for grid tables. Instead, use external linkage when performing complicated value operations.
+
+### 7.2 External Linkage Example
+
+```javascript
+// External linkage pattern
+(function($) {
+  // Prepare data to send to external system
+  var formData = {};
+  
+  // Collect data from relevant fields
+  formData.orderId = formaItems.product_72_textbox.getItemData.order_id();
+  formData.customerName = formaItems.product_72_textbox.getItemData.customer_name();
+  formData.orderDate = formaItems.product_72_calendar.getItemData.order_date();
+  
+  // Get order items
+  var rowId = "";
+  var inputIdList = ["product_id", "quantity", "unit_price"];
+  var orderItems = formaItems.product_80_table.getItemData.order_items(rowId, inputIdList);
+  
+  formData.items = orderItems;
+  
+  // Send data to external system
+  // This would typically be an AJAX call to a server endpoint
+  console.log("Sending order data to external system:");
+  console.log(JSON.stringify(formData, null, 2));
+  
+  /*
+  $.ajax({
+    url: '/api/external-system/process-order',
+    type: 'POST',
+    data: JSON.stringify(formData),
+    contentType: 'application/json',
+    success: function(response) {
+      console.log('Order processed successfully');
+      
+      // Update status with response data
+      var args = {};
+      args.data = {};
+      args.data.order_status = response.status;
+      args.data.tracking_number = response.trackingNumber;
+      
+      formaItems.product_72_textbox.setItemData.order_status(args);
+      formaItems.product_72_textbox.setItemData.tracking_number(args);
+    },
+    error: function(xhr, status, error) {
+      console.error('Error processing order:', error);
+      
+      // Update status with error information
+      var args = {};
+      args.data = {};
+      args.data.order_status = 'Error: ' + error;
+      
+      formaItems.product_72_textbox.setItemData.order_status(args);
+    }
+  });
+  */
+}) (jQuery);
+```

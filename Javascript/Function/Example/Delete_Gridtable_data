@@ -1,0 +1,40 @@
+$(document).ready(function() {
+    $("[id='imfrGridDelRow']").click(function() {
+        setTimeout(function() {
+            synchronizeGT2WithGT1();
+        }, 500);
+    });
+    
+    function synchronizeGT2WithGT1() {
+        // Get GT1 data
+        var gt1Result = formaItems.product_80_gridtable.getItemData.gt1("", ["seihin_nm"]);
+        
+        // Build GT1 product names set
+        var gt1ProductNames = new Set();
+        for(var i = 0; i < gt1Result.length; i++) {
+            if(gt1Result[i].seihin_nm && gt1Result[i].seihin_nm.trim() !== "") {
+                gt1ProductNames.add(gt1Result[i].seihin_nm);
+            }
+        }
+        
+        // Get GT2 data with all required fields
+        var gt2Result = formaItems.product_80_gridtable.getItemData.gt2("", ["seihin_nm_2", "umu", "version", "link"]);
+        
+        // Filter GT2 to match GT1
+        var filteredGT2 = [];
+        for(var j = 0; j < gt2Result.length; j++) {
+            if(gt2Result[j].seihin_nm_2 && gt1ProductNames.has(gt2Result[j].seihin_nm_2)) {
+                filteredGT2.push(gt2Result[j]);
+            }
+        }
+        
+        // Update GT2
+        var args = {
+            data: {
+                gt2: filteredGT2
+            }
+        };
+        
+        formaItems.product_80_gridtable.setItemData.gt2(args, {});
+    }
+});

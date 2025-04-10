@@ -1,0 +1,41 @@
+  SELECT DISTINCT 
+    dept.DEPARTMENT_NAME as deptName,
+    dept.DEPARTMENT_CD as deptCD, 
+    ath.USER_CD, 
+    inc_ath.PARENT_DEPARTMENT_CD 
+FROM 
+    IMM_DEPARTMENT_ATH ath
+JOIN 
+    IMM_DEPARTMENT dept
+  ON ath.DEPARTMENT_CD = dept.DEPARTMENT_CD
+JOIN 
+    IMM_DEPARTMENT_INC_ATH inc_ath
+  ON inc_ath.DEPARTMENT_CD  = ath.DEPARTMENT_CD 
+WHERE 
+    ath.COMPANY_CD = 'NP'
+  AND 
+    ath.DEPARTMENT_SET_CD = 'NP'  
+  AND 
+    ath.DELETE_FLAG = '0'
+  AND 
+    dept.LOCALE_ID = 'ja'  
+  AND 
+    dept.DELETE_FLAG = '0'
+  AND 
+    ath.USER_CD =   /*user_cd*/''
+  AND inc_ath.PARENT_DEPARTMENT_CD IN (
+    'shohog',
+    'kakokikakug',
+    'seizobu',
+    'hinshitsukanrig',
+    'seisangijutsug',
+    'shizaibu',
+    'shijotokatsujigyobu',
+    'tekkotokatsug',
+    'jidoshatokatsug',
+    'hitetsutokatsug',
+    'atsuentokatsug',
+    'shijoshientokatsug',
+    'gyomug',
+    /* deptApply_cd */ ''
+)

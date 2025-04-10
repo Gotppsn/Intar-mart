@@ -1,0 +1,18 @@
+//gt2 is table id 
+//"table id "[0]."fields" is "fields id"
+(function ($) {
+    var args = {};
+    args.data = {};
+    args.data.gt2 = [];
+ 
+    args.data.gt2[0] = {};
+    args.data.gt2[0].wabun_yofuyo = 1;
+    args.data.gt2[0].seihin_nm_2 = "AC-0"; // Corrected string quotation
+ 
+    args.data.gt2[1] = {};
+    args.data.gt2[1].seihin_nm_2 = "AC-1"
+    args.data.gt2[1].wabun_yofuyo = 1;
+ 
+    var option = {};
+    formaItems.product_80_gridtable.setItemData.gt2( args, option); // Corrected function call
+})(jQuery);
